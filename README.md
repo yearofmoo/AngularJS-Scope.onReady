@@ -52,7 +52,7 @@ var Ctrl = function($scope, $http) {
 module.directive('myDirective', function() {
 
   return {
-    link : function(scope, element, attrs, controller) {
+    link : function($scope, element, attrs, controller) {
       $scope.$whenReady(
         function() {
           element.html('your data was loaded fine');
