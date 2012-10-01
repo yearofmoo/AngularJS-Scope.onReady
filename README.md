@@ -13,7 +13,7 @@ be redundant if you have to do it each time for each page and directive.
 Luckily there's a plugin for that.
 
 
-## About
+## Installation
 
 Very simple, first download the plugin and place it somewhere within your application directory and then
 just include it as a dependency for your application module.
