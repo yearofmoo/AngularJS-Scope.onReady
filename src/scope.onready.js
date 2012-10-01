@@ -4,7 +4,7 @@ angular.injector().invoke(function($rootScope) {
   var successKey  = '_scope_success';
   var readyKey    = '_scope_ready';
 
-  //this is set as the default just incase you forget to call $scope.$prepare() in your controller
+  //this is set as the default just incase you forget to call $scope.$prepareForReady() in your controller
   $rootScope[successKey] = true;
   $rootScope[readyKey] = true;
 
@@ -15,7 +15,7 @@ angular.injector().invoke(function($rootScope) {
   };
 
   //you will need to call this first at the top of the controller
-  $rootScope.$prepare = function($q) {
+  $rootScope.$prepareForReady = function($q) {
     $q = $q || angular.injector().get('$q');
     cleanUp(this);
     this[successKey] = null;

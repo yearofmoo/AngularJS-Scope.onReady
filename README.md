@@ -15,7 +15,7 @@ Luckily there's a plugin for that.
 
 ```javascript
 //first set this in your controller
-$scope.$prepare();
+$scope.$prepareForReady();
 
 //then set this when you have fetched all your data in your controller
 $scope.$onReady();
@@ -38,7 +38,7 @@ Here's a better example of it's usage
 ```javascript
 //your controller
 var Ctrl = function($scope, $http) {
-  $scope.$prepare();
+  $scope.$prepareForReady();
   $http.get('/some.json')
     .success(function(json) {
       $scope.$onReady();
