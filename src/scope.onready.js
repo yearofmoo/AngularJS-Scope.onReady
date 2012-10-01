@@ -1,8 +1,4 @@
-(function() {
-
-  //injection stuff 
-  var $injector = angular.injector();
-  var $rootScope = $injector.get('$rootScope');
+angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($rootScope, $injector) {
 
   //this is the special key that tells the scope when it's ready
   var successKey  = '_scope_success';
@@ -64,4 +60,4 @@
     this[readyKey] = true;
   };
 
-})();
+}]);

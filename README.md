@@ -2,6 +2,7 @@
 
 This is a helper file to provide support for $scope.onReady and $scope.$whenReady commands within your angularJS application.
 
+
 ## About
 
 AngularJS will execute your template HTML and the controller at the same time when a view is accessed. This means that if you
@@ -10,6 +11,19 @@ you will have to make your directives **wait** until the data is there. The code
 be redundant if you have to do it each time for each page and directive.
 
 Luckily there's a plugin for that.
+
+
+## About
+
+Very simple, first download the plugin and place it somewhere within your application directory and then
+just include it as a dependency for your application module.
+
+```javascript
+var App = angular.module('MY_APP', ['Scope.onReady']);
+```
+
+Then the methods will be available to every scope in your application.
+
 
 ## Usage
 
@@ -32,6 +46,7 @@ $scope.$whenReady(function() {
 });
 ```
 
+
 ## Example
 
 Here's a better example of it's usage
@@ -53,21 +68,28 @@ var Ctrl = function($scope, $http) {
 //your directive
 module.directive('myDirective', function() {
 
-  return {
-    link : function($scope, element, attrs, controller) {
-      $scope.$whenReady(
-        function(someArgs) { //called when $scope.$onReady() is run
-          element.html('your data was loaded fine');
-        },
-        function(someArgs) { //called when $scope.$onFailure() is run
-          element.html('something went wrong when fetching the data');
-        }
-      );
-    }
+  return function($scope, element, attrs, controller) {
+    $scope.$whenReady(
+      function(someArgs) { //called when $scope.$onReady() is run
+        element.html('your data was loaded fine');
+      },
+      function(someArgs) { //called when $scope.$onFailure() is run
+        element.html('something went wrong when fetching the data');
+      }
+    );
   };
 
 });
 ```
+
+
+## What about if I do not use **$prepareForReady()** in my controller?
+
+Simple. Then your directives will automatically assume that your scope is ready and will fire with success right away.
+
+Use the $prepareForReady() at the top of each controller that you expect to fetch data from the server. Also for the directives
+that do not have to wait for the data then you do not have to use **$whenReady()**.
+
 
 ## More Information
 
