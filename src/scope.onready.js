@@ -1,4 +1,8 @@
-angular.injector().invoke(function($rootScope) {
+(function() {
+
+  //injection stuff 
+  var $injector = angular.injector();
+  var $rootScope = $injector.get('$rootScope');
 
   //this is the special key that tells the scope when it's ready
   var successKey  = '_scope_success';
@@ -16,7 +20,7 @@ angular.injector().invoke(function($rootScope) {
 
   //you will need to call this first at the top of the controller
   $rootScope.$prepareForReady = function($q) {
-    $q = $q || angular.injector().get('$q');
+    $q = $q || $injector.get('$q');
     cleanUp(this);
     this[successKey] = null;
     this[readyKey] = false;
@@ -60,4 +64,4 @@ angular.injector().invoke(function($rootScope) {
     this[readyKey] = true;
   };
 
-});
+})();
