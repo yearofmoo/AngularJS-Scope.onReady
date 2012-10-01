@@ -54,10 +54,10 @@ module.directive('myDirective', function() {
   return {
     link : function($scope, element, attrs, controller) {
       $scope.$whenReady(
-        function() {
+        function() { //called when $scope.$onReady() is run
           element.html('your data was loaded fine');
         },
-        function() {
+        function() { //called when $scope.$onFailure() is run
           element.html('something went wrong when fetching the data');
         }
       );
