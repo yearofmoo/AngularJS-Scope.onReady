@@ -41,10 +41,12 @@ var Ctrl = function($scope, $http) {
   $scope.$prepareForReady();
   $http.get('/some.json')
     .success(function(json) {
-      $scope.$onReady();
+      var someArgs = ['success'];
+      $scope.$onReady(someArgs);
     })
     .error(function() {
-      $scope.$onFailure();
+      var someArgs = ['failure'];
+      $scope.$onFailure(someArgs);
     });
 };
 
@@ -54,10 +56,10 @@ module.directive('myDirective', function() {
   return {
     link : function($scope, element, attrs, controller) {
       $scope.$whenReady(
-        function() { //called when $scope.$onReady() is run
+        function(someArgs) { //called when $scope.$onReady() is run
           element.html('your data was loaded fine');
         },
-        function() { //called when $scope.$onFailure() is run
+        function(someArgs) { //called when $scope.$onFailure() is run
           element.html('something went wrong when fetching the data');
         }
       );

@@ -45,9 +45,9 @@
   };
 
   //this is called in your controller when all your data is ready
-  $rootScope.$onReady = function() {
+  $rootScope.$onReady = function(args) {
     if(this.defer) {
-      this.defer.resolve();
+      this.defer.resolve(args);
     }
     cleanUp(this);
     this[successKey] = true;
@@ -55,9 +55,9 @@
   };
 
   //this is called in your controller when there is a failure of somesort
-  $rootScope.$onFailure = function() {
+  $rootScope.$onFailure = function(args) {
     if(this.defer) {
-      this.defer.reject();
+      this.defer.reject(args);
     }
     cleanUp(this);
     this[successKey] = false;
