@@ -16,6 +16,7 @@ angular.injector().invoke(function($rootScope) {
 
   //you will need to call this first at the top of the controller
   $rootScope.$prepare = function($q) {
+    $q = $q || angular.injector().get('$q');
     cleanUp(this);
     this[successKey] = null;
     this[readyKey] = false;
