@@ -87,8 +87,11 @@ module.directive('myDirective', function() {
 
 Simple. Then your directives will automatically assume that your scope is ready and will fire with success right away.
 
-Use the $prepareForReady() at the top of each controller that you expect to fetch data from the server. Also for the directives
+Use the **$prepareForReady()** at the top of each controller that you expect to fetch data from the server. Also for the directives
 that do not have to wait for the data then you do not have to use **$whenReady()**.
+
+If **$onReady()** or **$onFailure()** is called and **$prepareForReady()** was not called at the top of the controller then
+both methods will still work fine.
 
 
 ## More Information

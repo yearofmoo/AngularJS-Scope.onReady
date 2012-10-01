@@ -10,17 +10,19 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this is just here for code reuse
   var cleanUp = function($scope) {
+    $scope.$q = null;
     $scope.defer = null;
     $scope.promise = null;
   };
 
   //you will need to call this first at the top of the controller
   $rootScope.$prepareForReady = function($q) {
-    $q = $q || $injector.get('$q');
     cleanUp(this);
+    if($q) {
+      this.$q = $q;
+    }
     this[successKey] = null;
     this[readyKey] = false;
-    this.$q = $q;
   }
 
   //this is used within each directive
@@ -32,6 +34,9 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
     else { //this means it needs to wait for the controller to complete it's job
       if(!this.promise) {
         if(!this.defer) {
+          if(!this.$q) {
+            this.$q = $injector.get('$q');
+          }
           this.defer = this.$q.defer();
         }
         this.promise = this.defer.promise;
