@@ -28,7 +28,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
   //this is used within each directive
   $rootScope.$whenReady = function(success, fail) {
     fail = fail || function() { }; //just incase this is not set
-    if(this[readyKey]) { //this means it's already ready
+    if(this.$isReady()) { //this means it's already ready
       this[successKey] ? success() : fail();
     }
     else { //this means it needs to wait for the controller to complete it's job
@@ -43,6 +43,11 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
       }
       this.promise = this.promise.then(success, fail);
     }
+  };
+
+  //this will inform you if it is ready
+  $rootScope.$isReady = function() {
+    return !!this[readyKey];
   };
 
   //this will inform you if there are any events set
