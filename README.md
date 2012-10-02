@@ -96,6 +96,6 @@ both methods will still work fine.
 
 ## More Information
 
-This issue and solution is covered in more detail on
+Please visit the link below to read more about this issue:
 
 http://www.yearofmoo.com/2012/10/more-angularjs-magic-to-supercharge-your-webapp.html#how-to-make-sure-your-directives-are-run-after-your-scope-is-ready
