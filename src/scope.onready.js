@@ -52,7 +52,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this is called in your controller when all your data is ready
   $rootScope.$onReady = function(args) {
-    if(this.defer) {
+    if(this.$hasReadyEvents()) {
       this.defer.resolve(args);
     }
     cleanUp(this);
@@ -62,7 +62,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this is called in your controller when there is a failure of somesort
   $rootScope.$onFailure = function(args) {
-    if(this.defer) {
+    if(this.$hasReadyEvents()) {
       this.defer.reject(args);
     }
     cleanUp(this);

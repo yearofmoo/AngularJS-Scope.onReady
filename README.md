@@ -37,6 +37,8 @@ $scope.$onReady();
 //or if fails somehow and you need to instruct all your directives about it
 $scope.$onFailure();
 
+//this will let you know if there are any events set
+$scope.$hasReadyEvents(); //true or false
 
 //then inside any of your directives within your template you can do this
 $scope.$whenReady(function() {
