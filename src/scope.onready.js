@@ -46,8 +46,8 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
   };
 
   //this will inform you if there are any events set
-  $rootScope.$hasReadyEvents = function(success, fail) {
-    return this.promise && this.defer;
+  $rootScope.$hasReadyEvents = function() {
+    return !!this.promise && !!this.defer;
   };
 
   //this is called in your controller when all your data is ready

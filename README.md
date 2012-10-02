@@ -98,4 +98,4 @@ both methods will still work fine.
 
 This issue and solution is covered in more detail on
 
-http://www.yearofmoo.com
+http://www.yearofmoo.com/2012/10/more-angularjs-magic-to-supercharge-your-webapp.html#how-to-make-sure-your-directives-are-run-after-your-scope-is-ready
