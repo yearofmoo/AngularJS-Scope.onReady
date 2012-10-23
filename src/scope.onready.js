@@ -78,22 +78,42 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this is called in your controller when all your data is ready
   $rootScope.$onReady = function(args) {
-    if(this.$hasReadyEvents()) {
-      this.defer.resolve(args);
+    var $scope = this;
+    var C = function() {
+      cleanUp($scope);
+      $scope[successKey] = true;
+      $scope[readyKey] = true;
+    };
+    if($scope.$hasReadyEvents()) {
+      var F = function() {
+        $scope.defer.resolve(args);
+        C();
+      };
+      $scope.$$phase ? F() : $scope.$apply(F);
     }
-    cleanUp(this);
-    this[successKey] = true;
-    this[readyKey] = true;
+    else {
+      C();
+    }
   };
 
   //this is called in your controller when there is a failure of somesort
   $rootScope.$onFailure = function(args) {
-    if(this.$hasReadyEvents()) {
-      this.defer.reject(args);
+    var $scope = this;
+    var C = function() {
+      cleanUp($scope);
+      $scope[successKey] = false;
+      $scope[readyKey] = true;
+    };
+    if($scope.$hasReadyEvents()) {
+      var F = function() {
+        $scope.defer.reject(args);
+        C();
+      };
+      $scope.$$phase ? F() : $scope.$apply(F);
     }
-    cleanUp(this);
-    this[successKey] = false;
-    this[readyKey] = true;
+    else {
+      C();
+    }
   };
 
 }]);
