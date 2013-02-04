@@ -138,13 +138,16 @@ describe("Testing AngularJS Scope.onReady", function() {
       $scope.$whenReady(done);
     });
 
-    it("should fire instantly if not prepared", function(done) {
+    it("should fire instantly for success if not prepared", function(done) {
       $scope.$whenReady(done);
     });
 
-    it("should fire in consequetive", function(done) {
-
-      $scope.$whenReady(done);
+    it("should not fire instantly for fail if not prepared", function() {
+      var bool = false;
+      $scope.$whenReady(null, function() {
+        bool = true;
+      });
+      expect(bool).to.equal(false);
     });
 
     describe("Ordering", function() {
