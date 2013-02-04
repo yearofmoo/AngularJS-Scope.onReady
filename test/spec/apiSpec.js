@@ -86,9 +86,19 @@ describe("Testing AngularJS Scope.onReady", function() {
       expect($scope.$hasReadyEvents()).to.equal(true);
     });
 
-    it("should not have ready events by default", function() {
+    it("should not have ready events if nothing is provided", function() {
       expect($scope.$hasReadyEvents()).to.equal(false);
       $scope.$prepareForReady();
+      expect($scope.$hasReadyEvents()).to.equal(false);
+      $scope.$prepareForReady(null);
+      expect($scope.$hasReadyEvents()).to.equal(false);
+      $scope.$prepareForReady(null, null);
+      expect($scope.$hasReadyEvents()).to.equal(false);
+    });
+
+    it("should not have ready events if only the failure callback is provided", function() {
+      expect($scope.$hasReadyEvents()).to.equal(false);
+      $scope.$prepareForReady(null, function() {});
       expect($scope.$hasReadyEvents()).to.equal(false);
     });
 
