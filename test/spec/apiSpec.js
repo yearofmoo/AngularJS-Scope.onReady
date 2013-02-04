@@ -33,10 +33,6 @@ describe("Testing AngularJS Scope.onReady", function() {
       expect($scope.$isReady).to.be.a('function');
     });
 
-    it("should contain an $isReady method", function() {
-      expect($scope.$isReady).to.be.a('function');
-    });
-
     it("should contain an $hasReadyEvents method", function() {
       expect($scope.$hasReadyEvents).to.be.a('function');
     });
