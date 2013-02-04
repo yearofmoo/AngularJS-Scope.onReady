@@ -24,6 +24,9 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
   //this is the special key that tells the scope when it's ready
   var successKey  = '__scope_success__';
   var readyKey    = '__scope_ready__';
+  var qKey        = '__q__';
+  var deferKey    = '__defer__';
+  var promiseKey  = '__promise__';
 
   //this is set as the default just incase you forget to call $scope.$prepareForReady() in your controller
   $rootScope[successKey] = true;
@@ -31,16 +34,16 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this is just here for code reuse
   var cleanUp = function($scope) {
-    $scope.__$q__ = null;
-    $scope.defer = null;
-    $scope.promise = null;
+    $scope[qKey] = null;
+    $scope[deferKey] = null;
+    $scope[promiseKey] = null;
   };
 
   //you will need to call this first at the top of the controller
   $rootScope.$prepareForReady = function($q) {
     cleanUp(this);
     if($q) {
-      this.__$q__ = $q;
+      this[qKey] = $q;
     }
     this[successKey] = null;
     this[readyKey] = false;
@@ -54,25 +57,21 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
       this[successKey] ? success() : fail();
     }
     else { //this means it needs to wait for the controller to complete it's job
-      if(!this.promise) {
-        if(!this.defer) {
-          if(!this.__$q__) {
-            this.__$q__ = $injector.get('$q');
+      if(!this[promiseKey]) {
+        if(!this[deferKey]) {
+          if(!this[qKey]) {
+            this[qKey] = $injector.get('$q');
           }
-          this.defer = this.__$q__.defer();
+          this[deferKey] = this[qKey].defer();
         }
-        this.promise = this.defer.promise;
+        this[promiseKey] = this[deferKey].promise;
       }
-      var $q = this.__$q__;
-      this.promise = this.promise.then(
-        function() {
-          success()
-          return true;
-        },
-        function() {
+      var $q = this[qKey];
+      this[promiseKey] = this[promiseKey].then(
+        success,
+        function(reason) {
           fail();
-          $q.reject();
-          return false;
+          return $q.reject(reason);
         }
       );
     }
@@ -85,7 +84,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
 
   //this will inform you if there are any events set
   $rootScope.$hasReadyEvents = function() {
-    return this.promise && this.defer ? true : false;
+    return this[promiseKey] && this[deferKey] ? true : false;
   };
 
   //this is called in your controller when all your data is ready
@@ -99,7 +98,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
     };
     if($scope.$hasReadyEvents()) {
       var F = function() {
-        $scope.defer.resolve(args);
+        $scope[deferKey].resolve(args);
         C();
       };
       $scope.$$phase ? F() : $scope.$apply(F);
@@ -120,7 +119,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
     };
     if($scope.$hasReadyEvents()) {
       var F = function() {
-        $scope.defer.reject(args);
+        $scope[deferKey].reject(args);
         C();
       };
       $scope.$$phase ? F() : $scope.$apply(F);

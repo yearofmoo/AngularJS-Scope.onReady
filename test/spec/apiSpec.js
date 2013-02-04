@@ -4,11 +4,12 @@ describe("Testing AngularJS Scope.onReady", function() {
 
   var $scope;
   beforeEach(inject(function($rootScope) {
-    if($scope) {
-      $scope.$destroy();
-    }
     $scope = $rootScope.$new();
   }));
+
+  afterEach(function() {
+    $scope.$destroy();
+  });
 
   describe("Testing Functions", function() {
 
@@ -44,6 +45,11 @@ describe("Testing AngularJS Scope.onReady", function() {
 
   describe("Testing Behaviour", function() {
 
+    var $q;
+    beforeEach(inject(['$q',function(q) {
+      $q = q;
+    }]));
+
     it("should prepare an event when functions are added", function() {
       $scope.$prepareForReady();
       expect($scope.$hasReadyEvents()).to.equal(false);
@@ -60,8 +66,20 @@ describe("Testing AngularJS Scope.onReady", function() {
       $scope.$onReady();
     });
 
+    it("should fire success when onReady and $q is custom", function(done) {
+      $scope.$prepareForReady($q);
+      $scope.$whenReady(done);
+      $scope.$onReady();
+    });
+
     it("should fire failure when onFailure", function(done) {
       $scope.$prepareForReady();
+      $scope.$whenReady(function() {}, done);
+      $scope.$onFailure();
+    });
+
+    it("should fire failure when onFailure and q is custom", function(done) {
+      $scope.$prepareForReady($q);
       $scope.$whenReady(function() {}, done);
       $scope.$onFailure();
     });
