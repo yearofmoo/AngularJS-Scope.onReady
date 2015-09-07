@@ -47,7 +47,7 @@ angular.module('Scope.onReady', []).run(['$rootScope', '$injector', function($ro
     }
     this[successKey] = null;
     this[readyKey] = false;
-  }
+  };
 
   //this is used within each directive
   $rootScope.$whenReady = function(success, fail) {
